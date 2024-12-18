@@ -11,7 +11,7 @@ def distanceGA(point1, point2):  # Distance between two points
 def calculate_fitness(tour):  # Fitness = total distance travelled
     total_distance = 0
     for i in range(len(tour)):
-        total_distance += distanceGA(Verticies[tour[i]], Verticies[tour[(i + 1) % len(tour)]])
+        total_distance += distanceGA(verticies[tour[i]], verticies[tour[(i + 1) % len(tour)]])
     return total_distance
 
 
@@ -61,16 +61,16 @@ def display_tour(canvas, best_tour):  # Create points and lines in tkinter
     
     for i in range(len(best_tour)):
         canvas.create_line(
-            (Verticies[best_tour[i]][0] + radius / 2) * constant,
-            (Verticies[best_tour[i]][1] + radius / 2) * constant,
-            (Verticies[best_tour[(i + 1) % len(best_tour)]][0] + radius / 2) * constant,
-            (Verticies[best_tour[(i + 1) % len(best_tour)]][1] + radius / 2) * constant
+            (verticies[best_tour[i]][0] + RADIUS / 2) * CONSTANT,
+            (verticies[best_tour[i]][1] + RADIUS / 2) * CONSTANT,
+            (verticies[best_tour[(i + 1) % len(best_tour)]][0] + RADIUS / 2) * CONSTANT,
+            (verticies[best_tour[(i + 1) % len(best_tour)]][1] + RADIUS / 2) * CONSTANT
         )
 
-    for nod in Verticies:
+    for nod in verticies:
         canvas.create_oval(
-            nod[0] * constant, nod[1] * constant,
-            (nod[0] + radius) * constant, (nod[1] + radius) * constant, fill="red"
+            nod[0] * CONSTANT, nod[1] * CONSTANT,
+            (nod[0] + RADIUS) * CONSTANT, (nod[1] + RADIUS) * CONSTANT, fill="red"
         )
 
     canvas.update()  
@@ -106,21 +106,21 @@ def plot_fitness_graph(canvas, fitness_history):#plot a graph for statistics at 
 
 
 def genetic_algorithm(canvas, graph_canvas): #canvas, graph_canvas                      main genetic algorithm function
-    population = initialize_population(population_size, len(Verticies)) #create random tour
+    population = initialize_population(POPULATION_SIZE, len(verticies)) #create random tour
     #create local variables
     fitness_history = []  
     best_fitness = float('inf')
     stagnation_count = 0  
 
-    for generation in range(max_generations):#go throug generations
+    for generation in range(MAX_GENERATIONS):#go throug generations
         fitness_scores = [calculate_fitness(tour) for tour in population]
         new_population = []
         
-        for _ in range(population_size):#create new population
+        for _ in range(POPULATION_SIZE):#create new population
             parent1 = tournament_selection(population, fitness_scores)
             parent2 = tournament_selection(population, fitness_scores)
             child = crossover(parent1, parent2)
-            child = mutate(child, mutation_rate)
+            child = mutate(child, MUTATION_RATE)
             new_population.append(child)
         
         population = new_population
@@ -137,7 +137,7 @@ def genetic_algorithm(canvas, graph_canvas): #canvas, graph_canvas              
         else:
             stagnation_count += 1  
 
-        if stagnation_count >= stagnation_limit:#limit stagnation for efficienncy
+        if stagnation_count >= STAGNATION_LIMIT:#limit stagnation for efficienncy
             # print(f"Stopped early at generation {generation} due to stagnation.")
             break
 
@@ -150,7 +150,7 @@ def genetic_algorithm(canvas, graph_canvas): #canvas, graph_canvas              
 # ----------------------------------uncomment this to run----------------------------------
 # Display
 root = tkinter.Tk()
-canvas = tkinter.Canvas(root, height=250 * constant, width=250 * constant, background="#e9f7f7")#graph
+canvas = tkinter.Canvas(root, height=250 * CONSTANT, width=250 * CONSTANT, background="#e9f7f7")#graph
 canvas.pack(side=tkinter.LEFT)
 
 graph_canvas = tkinter.Canvas(root, height=250, width=500,background="#e9f7f7")#stats

@@ -8,7 +8,7 @@ from GLOBAL_VARIABLES import*
 
 # Display
 root = tkinter.Tk()
-canvas = tkinter.Canvas(root, height=250 * constant, width=250 * constant, background="#e9f7f7")#graph
+canvas = tkinter.Canvas(root, height=250 * CONSTANT, width=250 * CONSTANT, background="#e9f7f7")#graph
 canvas.pack(side=tkinter.LEFT)
 
 graph_canvas = tkinter.Canvas(root, height=250, width=500,background="#e9f7f7")#stats
@@ -30,7 +30,7 @@ print(f"best solution: {best_tour}")
 #---------------    STIMULATED ANNEALING   ------------------
 #------------------------------------------------------------
 startSA = time.time()  # Start timer for genetic algorithm
-outSA,best_solution = simulated_annealing(canvas,Verticies) #canvas, 
+outSA,best_solution = simulated_annealing(canvas,verticies) #canvas, 
 endSA = time.time() #end & print the timer
 print(f"best solution: {best_solution}")
 # print(f"time: {endSA - startSA} s - distance: {outSA}")

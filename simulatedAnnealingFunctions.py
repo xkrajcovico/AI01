@@ -12,8 +12,8 @@ def distanceSA(p1, p2):
 def total_path_length(tour):
     length = 0
     for i in range(len(tour) - 1):
-        length += distanceSA(Verticies[tour[i]], Verticies[tour[i + 1]])
-    length += distanceSA(Verticies[tour[-1]], Verticies[tour[0]])  # Return to starting point
+        length += distanceSA(verticies[tour[i]], verticies[tour[i + 1]])
+    length += distanceSA(verticies[tour[-1]], verticies[tour[0]])  # Return to starting point
     return length
 
 
@@ -28,16 +28,16 @@ def delta_path_length(tour, i, j):
         i, j = j, i
 
     if i == j - 1:
-        orig_dist = distanceSA(Verticies[tour[i]], Verticies[tour[j]]) + distanceSA(Verticies[tour[j]], Verticies[tour[(j + 1) % n]])
-        new_dist = distanceSA(Verticies[tour[i]], Verticies[tour[(j + 1) % n]]) + distanceSA(Verticies[tour[j]], Verticies[tour[i]])
+        orig_dist = distanceSA(verticies[tour[i]], verticies[tour[j]]) + distanceSA(verticies[tour[j]], verticies[tour[(j + 1) % n]])
+        new_dist = distanceSA(verticies[tour[i]], verticies[tour[(j + 1) % n]]) + distanceSA(verticies[tour[j]], verticies[tour[i]])
     else:
         orig_dist = (
-            distanceSA(Verticies[tour[i]], Verticies[tour[i - 1]]) + distanceSA(Verticies[tour[i]], Verticies[tour[(i + 1) % n]]) +
-            distanceSA(Verticies[tour[j]], Verticies[tour[j - 1]]) + distanceSA(Verticies[tour[j]], Verticies[tour[(j + 1) % n]])
+            distanceSA(verticies[tour[i]], verticies[tour[i - 1]]) + distanceSA(verticies[tour[i]], verticies[tour[(i + 1) % n]]) +
+            distanceSA(verticies[tour[j]], verticies[tour[j - 1]]) + distanceSA(verticies[tour[j]], verticies[tour[(j + 1) % n]])
         )
         new_dist = (
-            distanceSA(Verticies[tour[j]], Verticies[tour[i - 1]]) + distanceSA(Verticies[tour[j]], Verticies[tour[(i + 1) % n]]) +
-            distanceSA(Verticies[tour[i]], Verticies[tour[j - 1]]) + distanceSA(Verticies[tour[i]], Verticies[tour[(j + 1) % n]])
+            distanceSA(verticies[tour[j]], verticies[tour[i - 1]]) + distanceSA(verticies[tour[j]], verticies[tour[(i + 1) % n]]) +
+            distanceSA(verticies[tour[i]], verticies[tour[j - 1]]) + distanceSA(verticies[tour[i]], verticies[tour[(j + 1) % n]])
         )
 
     return new_dist - orig_dist
@@ -82,7 +82,7 @@ def optimalizationOfCrossingEdges(tour):  # tour is a list of indices
         for j in range(i + 2, n):
             if j == i + 1 or (i == 0 and j == n - 1):
                 continue
-            if edges_cross(Verticies[tour[i]], Verticies[tour[i + 1]], Verticies[tour[j]], Verticies[tour[(j + 1) % n]]):
+            if edges_cross(verticies[tour[i]], verticies[tour[i + 1]], verticies[tour[j]], verticies[tour[(j + 1) % n]]):
                 tour[i + 1:j + 1] = reversed(tour[i + 1:j + 1])
     return tour
 
@@ -96,22 +96,22 @@ def display_solution(canvas, tour):
         next_vertex_idx = tour[(i + 1) % len(tour)]  # Wrap around to the starting city
 
         # Get the coordinates of the current and next cities from Verticies
-        current_vertex = Verticies[current_vertex_idx]
-        next_vertex = Verticies[next_vertex_idx]
+        current_vertex = verticies[current_vertex_idx]
+        next_vertex = verticies[next_vertex_idx]
 
         canvas.create_line(
-            (current_vertex[0] + radius / 2) * constant,
-            (current_vertex[1] + radius / 2) * constant,
-            (next_vertex[0] + radius / 2) * constant,
-            (next_vertex[1] + radius / 2) * constant
+            (current_vertex[0] + RADIUS / 2) * CONSTANT,
+            (current_vertex[1] + RADIUS / 2) * CONSTANT,
+            (next_vertex[0] + RADIUS / 2) * CONSTANT,
+            (next_vertex[1] + RADIUS / 2) * CONSTANT
         )
 
     # Draw vertices
     for idx in tour:
-        vertex = Verticies[idx]
+        vertex = verticies[idx]
         canvas.create_oval(
-            vertex[0] * constant, vertex[1] * constant,
-            (vertex[0] + radius) * constant, (vertex[1] + radius) * constant,
+            vertex[0] * CONSTANT, vertex[1] * CONSTANT,
+            (vertex[0] + RADIUS) * CONSTANT, (vertex[1] + RADIUS) * CONSTANT,
             fill="red"
         )
 
@@ -125,10 +125,10 @@ def simulated_annealing(canvas,vertices):  # canvas,
     current_length = total_path_length(current_solution)
     best_solution = current_solution[:]
     best_length = current_length
-    temperature = initial_temperature
+    temperature = INITIAL_TEMPERATURE
     iteration = 0
 
-    while temperature > lowPoint:
+    while temperature > LOW_POINT:
         iteration += 1
         # Create a new solution by swapping two vertices randomly
         new_solution = current_solution[:]
@@ -154,10 +154,10 @@ def simulated_annealing(canvas,vertices):  # canvas,
             best_length = current_length
         
         # Cool down the temperature
-        temperature *= cooling_rate
+        temperature *= COOLING_RATE
         
         # Optionally, update the canvas if you want to visualize every few iterations
-        if iteration % displayIteration == 0:
+        if iteration % DISPLAY_ITERATION == 0:
             display_solution(canvas, current_solution)
     
     return best_length, best_solution
@@ -165,12 +165,12 @@ def simulated_annealing(canvas,vertices):  # canvas,
 # ----------------------------------uncomment this to run----------------------------------
 # Display
 root = tkinter.Tk()
-canvas = tkinter.Canvas(root, height=250 * constant, width=250 * constant, background="#e9f7f7")  # graph
+canvas = tkinter.Canvas(root, height=250 * CONSTANT, width=250 * CONSTANT, background="#e9f7f7")  # graph
 canvas.pack(side=tkinter.LEFT)
 
 # Run simulated annealing and measure execution time
 start = time.time()
-outSA, best_solution = simulated_annealing(canvas,Verticies) #canvas, 
+outSA, best_solution = simulated_annealing(canvas,verticies) #canvas, 
 end = time.time()
 
 # Print the results

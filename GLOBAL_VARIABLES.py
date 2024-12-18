@@ -1,16 +1,16 @@
 import random
 # Important variables
-constant = 3
-radius = 6
-NumberOfVerticies = 20
-SleepTime = 0.1
+CONSTANT = 3
+RADIUS = 6
+NUMBER_OF_VERTICIES = 20
+SLEEP_TIME = 0.1
 
 
 #gen alg variables
-population_size = 512
-mutation_rate = 0.001
-max_generations = 1000
-stagnation_limit = 7 
+POPULATION_SIZE = 512
+MUTATION_RATE = 0.001
+MAX_GENERATIONS = 1000
+STAGNATION_LIMIT = 7 
 
 
 # #SA variables
@@ -20,10 +20,10 @@ stagnation_limit = 7
 # displayIteration = 100
 
 #SA variables
-initial_temperature = 1000  # Start with a higher temperature for more exploration
-cooling_rate = 0.999       # Slower cooling for better convergence
-lowPoint = 0.2
-displayIteration = 100
+INITIAL_TEMPERATURE = 1000  # Start with a higher temperature for more exploration
+COOLING_RATE = 0.999       # Slower cooling for better convergence
+LOW_POINT = 0.2
+DISPLAY_ITERATION = 100
 
 def generate_unique_vertices(num_vertices, min_val, max_val):
     vertices = set()
@@ -33,8 +33,8 @@ def generate_unique_vertices(num_vertices, min_val, max_val):
         vertices.add((x, y))  
     return list(vertices)
 
-Verticies = generate_unique_vertices(NumberOfVerticies, 10, 200)
-# Verticies = [[60, 200],
+verticies = generate_unique_vertices(NUMBER_OF_VERTICIES, 10, 200)
+# verticies = [[60, 200],
 # [180, 200],
 # [100, 180],
 # [140, 180],
